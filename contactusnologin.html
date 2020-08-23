@@ -1,0 +1,201 @@
+<?
+include 'dbutils.php';
+include 'utils.php';
+$hidemenus = true;
+
+$err = "";
+$success = false;
+
+if ($_POST['Send'] == 'Send') {
+
+  if ($_POST['team'] == 'management' ) {
+    $query = sprintf( "select fm.email from familymember fm where fm.management=1");
+  }
+  elseif ($_POST['team'] == 'support' ) {
+    $query = sprintf( "select fm.email from familymember fm where fm.support=1");
+  }
+  else {
+    $err= 'Unknown team name';
+  }
+  if ($err == '') {
+
+
+
+    $message = "MESSAGE FROM=" . $_POST['fullname'] . "\r\n";
+	$message .= "SUBJECT=" . $_POST['subject'] . "\r\n";
+	$message .= "EMAIL=" . $_POST['fromemail'] . "\r\n";
+	$message .= "DATE=" . date("h:i:sa D-d-M-Y") . "\r\n\r\n";
+	$message .= "MESSAGE=" . $_POST['message'] . "\r\n";
+
+
+
+	//Now send a mail
+
+    $emails = mhexecquery($query, $err);
+    $to = '';
+    while ($row = mysql_fetch_assoc($emails)) {
+		$to      .= ', ' . $row['email'];
+	}
+
+	$subject = 'WEBSITE MESSAGE FROM www.malthousecottage.com';
+	$headers = 'From: ' . $_POST['fromemail'] . "\r\n" .
+	    'CC: ' . $cc . "\r\n" ;
+	    'Reply-To: ' . $_POST['fromemail'] . "\r\n" ;
+
+	mail($to, $subject, $message, $headers);
+
+	//Now mail the sender
+	$to      = $_POST['fromemail'];
+	$subject = 'AUTO REPLY: From Malthouse Cottage' ;
+	$message = 'Thankyou for sending a message to Malthouse Cottage.  You will receive a reply shortly.'. "\r\n" .
+				'You sent the following message to Malthouse Cottage: '. "\r\n\r\n" .
+				$_POST['message'];
+	$headers = 'From: noreply@malthousecottage.com' . "\r\n" .
+	    'Reply-To: noreply@malthousecottage.com' . "\r\n" ;
+
+
+	mail($to, $subject, $message, $headers);
+	$success = true;
+  }
+
+}
+
+?>
+<html>
+<head>
+  <title>Malthouse Cottage - Contact Us</title>
+  <link rel="stylesheet" href="style/malthouse.css">
+  <script src="script/mhlinks.js"></script>
+  <script src="script/mhvalidate.js"></script>
+  <script src="script/dateselector.js"></script>
+  <script>
+  <!--
+  function validateform( ) {
+
+    if (!checkmandatoryfield(document.mainform.fullname, 'Full Name')) {
+      return false;
+    }
+
+    if (!checkmandatoryfield(document.mainform.fromemail, 'Email')) {
+      return false;
+    }
+
+    if (!checkmandatoryfield(document.mainform.subject, 'Subject')) {
+      return false;
+    }
+    if (!checkmandatoryfield(document.mainform.team, 'Team', true)) {
+      return false;
+    }
+    if (!checkmandatoryfield(document.mainform.message, 'Message')) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function setupform() {
+
+    <? if (trim($_POST['team']) !== ''  || trim($_GET['team']) !== ''){?>
+    var i;
+    for (i=0; i<document.mainform.team.length;i++) {
+	  if (document.mainform.team.item(i).value == '<?echo trim($_POST['team']) . trim($_GET['team'])?>') {
+	    document.mainform.team.selectedIndex=i;
+	  }
+    }
+    <?}?>
+
+    if (document.mainform.fullname != null) {
+      document.mainform.fullname.focus();
+    }
+    return true;
+  }
+  //-->
+  </script>
+
+</head>
+
+<body onload="setupform()">
+<form name="mainform" action="contactusnologin.php" method="post" onsubmit="return validateform()">
+<?include 'header.php';?>
+        <table align="center" width="800" cellpadding="0" cellspacing="0" border="0">
+		  <tr valign="top">
+		    <td align="left"><img src="image/spacer.gif" border="0" width="1" height="10" ></td>
+		  </tr>
+          <tr valign="top">
+            <td colspan="3" >
+              <table width="100%" cellpadding="5" cellspacing="0" border="0">
+                <tr valign="top">
+                  <td align="right" width="200">&nbsp;</td>
+		          <td align="left"><h2>Contact Malthouse Cottage</h2></td>
+		        </tr>
+<?if ($err !== '') {
+?>
+                <tr valign="top">
+                  <td align="right" width="200">&nbsp;</td>
+                  <td align="left" class="error"><? echo $err ?></td>
+                </tr>
+<?}
+elseif ($success) {?>
+                <tr valign="top">
+                  <td align="right" width="200">&nbsp;</td>
+                  <td align="left" class="message">Your message has been successfully sent.</td>
+                </tr>
+
+<?}
+else {
+?>
+
+                <tr valign="top" colspan="2">
+                   <td align="right" width="200">&nbsp;</td>
+                   <td align="left">Complete each of the fields below, including your message and click the Send button.  <br>Your message will be forwarded to the Malthouse Cottage team.</td>
+                </tr>
+                <tr valign="top">
+                  <td align="left"><img src="image/spacer.gif" border="0" width="1" height="2" ></td>
+                </tr>
+                <tr valign="top">
+                  <td align="right" width="200">Your Name:</td>
+                  <td align="left" width="600"><? createinput_text("fullname", $_POST['fullname'], "30", "200")?>&nbsp;<span class="error">*</span></td>
+                </tr>
+                <tr valign="top">
+                  <td align="right" width="200">Your Email:</td>
+                  <td align="left" width="600"><? createinput_text("fromemail", $_POST['fromemail'], "30", "200")?>&nbsp;<span class="error">*</span></td>
+                </tr>
+                <tr valign="top">
+                  <td align="right" width="200">Subject:</td>
+                  <td align="left" width="600"><? createinput_text("subject", $_POST['subject'], "30", "200")?>&nbsp;<span class="error">*</span></td>
+                </tr>
+                <tr valign="top">
+                  <td align="right" width="200">Team:</td>
+                  <td align="left" width="600">
+                    <select name="team">
+                      <option value="">&lt;Select Team&gt;</option>
+                      <option value="management">Management</option>
+                      <option value="support">Web Support</option>
+                    </select>
+                    &nbsp;<span class="error">*</span></td>
+                </tr>
+                <tr valign="top">
+                  <td align="right" width="200">Message:</td>
+                  <td align="left" width="600"><? createinput_textarea("message", $_POST['message'], "10", "60")?></td>
+                </tr>
+                <tr valign="top">
+                  <td align="left"><img src="image/spacer.gif" border="0" width="1" height="2" ></td>
+                </tr>
+                <tr valign="top">
+                  <td align="right" width="200">&nbsp;</td>
+                  <td align="left" width="600"><? createinput_submit("Send")?>&nbsp;<?createinput_submit("Cancel", false, "window.history.back()")?></td>
+                </tr>
+<?}?>
+                <tr valign="top">
+                  <td align="left"><img src="image/spacer.gif" border="0" width="1" height="2" ></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+<?include 'footer.php';?>
+</form>
+<DIV ID="testdiv1" STYLE="position:absolute;visibility:hidden;background-color:white;layer-background-color:white;"></DIV>
+</body>
+</html>
+

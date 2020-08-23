@@ -1,0 +1,131 @@
+<html>
+<head>
+
+<title>SPM France - Contact Us</title>
+<link rel="stylesheet" href="style/flayosc.css">
+
+  <script>
+  <!--
+  function validateform( ) {
+
+    if (!checkmandatoryfield(document.mainform.fullname, 'Full Name')) {
+      return false;
+    }
+
+    if (!checkmandatoryfield(document.mainform.email, 'Email')) {
+      return false;
+    }
+
+    if (!checkmandatoryfield(document.mainform.subject, 'Subject')) {
+      return false;
+    }
+    if (!checkmandatoryfield(document.mainform.message, 'Message')) {
+      return false;
+    }
+
+    return true;
+  }
+
+function checkmandatoryfield(obj, nme) {
+  if (obj!=null) {
+     if (obj.value == '') {
+       alert( 'Please enter mandatory field: ' + nme);
+       obj.focus()
+       return false;
+     }
+  }
+
+  return true;
+}
+
+//-->
+</script>
+</head>
+
+<body bgcolor="#90CAC9">
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+  <!--menu start-->
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0" width="800">
+        <tr valign="middle">
+          <td class="main"  align="center">
+            <img src="image/spacer.jpg" border="0" width="0" height="50"></a>
+          </td>
+        </tr>
+      </table>
+      <table cellpadding="2" cellspacing="0" border="0" width="800">
+        <tr valign="middle">
+          <td class="menu" align="center" width="75"><a href="index.html">Home</a></td>
+          <td class="menu" align="center" width="75"><a href="http://picasaweb.google.com/JWood225/Flayosc" target="_blank">Photo</a></td>
+          <td class="menu" align="center" width="100"><a href="http://www.ville-flayosc.fr/uk/discover/discover.htm" target="_blank">Local Area</a></td>
+          <td class="menu" align="center" width="100"><a href="contactus.html">Contact SPM</a></td>
+          <td class="menu" align="center">&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <!--menu end-->
+  <tr>
+    <td align="center">
+  	  <table cellpadding="0" cellspacing="0" border="0" >
+	    <tr>
+          <td class="main">
+			<table class="main" width="798" cellpadding="0" cellspacing="0" border="0" >
+				<tr valign="top" height="10" >
+					<td>&nbsp;</td>
+				</tr>
+				<tr valign="top" height="300" >
+					<td align="center" class="submenu">
+						<h2>Contact Us</h2>
+				  <form name="form1" id="form1" action="contactus.php" method="post" onsubmit="return validateform()">
+					<table width="500" border="0" cellpadding="2" cellspacing="0">
+					<tr>
+					  <td align="right" width="50">&nbsp;</td>
+					  <td  align="left">*Mandatory fields</td>
+					</tr>
+					<tr>
+					  <td align="right">Name:</td>
+					  <td align="left"><input type="text" name="fullname" size="40" maxlength="100">&nbsp;*</td>
+					</tr>
+					<tr>
+					  <td align="right">Email:</td>
+					  <td align="left"><input type="text" name="email" size="40" maxlength="100">&nbsp;*</td>
+					</tr>
+					<tr>
+					  <td align="right">Message:</td>
+					  <td align="left"><textarea name="message" cols="50" rows="10"></textarea>&nbsp;*</td>
+					</tr>
+					<tr>
+					  <td align="right">&nbsp;</td>
+					  <td align="left"><input class="submit" type="submit" value="Submit"></td>
+					</tr>
+
+
+					</table>
+				  </form>
+
+					</td>
+				</tr>
+			</table>
+          </td>
+	    </tr>
+	  </table>
+    </td>
+  </tr>
+
+  <!--footer start-->
+  <tr>
+    <td align="center">
+      <table cellpadding="2" cellspacing="0" border="0" width="800">
+        <tr valign="middle">
+          <td class="footer" align="center"><a href="http://www.softwarejewels.com" title="site created by Software Jewels">www.softwarejewels.com</a></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <!--footer end-->
+</table>
+</body>
+
+</html>
